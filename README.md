@@ -1,94 +1,23 @@
-🚜 Loader Store - Management System
-<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/07e6f0e7-4e7f-45b5-aec7-3413454ad863" />
+# SCRUM-246 — One-click Windows temporary public HTTPS launcher
 
+**Status: Windows integration test pending.** This is a development/demo tunnel, not the permanent deployment described in SCRUM-139.
 
-A Comprehensive Inventory & Point of Sale (POS) System for Loader Spare Parts
+## Repository-specific defaults
+The repo README identifies Python `server.py` and local port 8000. The launcher has been adjusted to use those settings in `launcher.config.bat`, with the assumption that the launcher files are stored under `SCRUM-246/` in the repository root.
 
-📝 Overview
+## How to run on Windows
+1. Install Python 3.8+ and ensure `python` is on PATH.
+2. Install the official Cloudflare `cloudflared` CLI and ensure `cloudflared.exe` is on PATH; or place it alongside the BAT script.
+3. Confirm `server.py` exists in the repository root and opens locally at `http://127.0.0.1:8000`; if different, edit `launcher.config.bat`.
+4. Double-click `SCRUM-246/run-global-server.bat`.
+5. Keep both the server and launcher windows open. The tunnel prints a temporary `https://...trycloudflare.com` link, which changes when restarted.
+6. Test the link from another network after confirming auth and permissions.
 
-Loader Store is a lightweight, blazing-fast, and fully self-contained web-based management system tailored for heavy machinery and loader spare parts stores. Built with a clean architecture without relying on heavy external frameworks, it features a Python standard-library backend and a Vanilla JavaScript Single Page Application (SPA) frontend.
+## Security
+This exposes the running application to the public Internet. **Do not use real customer data, shared default admin credentials, or a development server with privileged debugging enabled.** Protect logins and enforce rate limits before testing. Restrict access to a test environment. Never commit secret keys or production SQLite databases.
 
-✨ Key Features
-
-🔐 Security & Authentication
-
-Role-Based Access Control (RBAC): Distinct privileges for "Managers" (Full Access) and "Employees" (Sales & Inventory only).
-
-Secure Login/Registration: Passwords are encrypted using PBKDF2 hashing with unique salts.
-
-Pending Approvals: New accounts remain in a 'pending' state until approved by an administrator.
-
-📦 Inventory & Sales Management
-
-Smart POS System: Quick invoice generation with automatic stock deduction and 14% tax calculation.
-
-Low Stock Alerts: Automatic visual highlighting and dashboard alerts when items fall below their minimum threshold.
-
-Dynamic Categories: Organize spare parts efficiently with real-time filtering.
-
-🤖 Advanced AI Features
-
-🎙️ Voice Assistant: Integrated smart assistant supporting Egyptian Arabic voice commands (e.g., "ضيف اتنين فلتر زيت", "خصم خمسين").
-
-📷 Visual Image Search: Upload or capture a photo of a spare part to find its match in the database using built-in HOG and Color Histogram analysis.
-
-💰 Financials & Reporting
-
-Comprehensive Dashboards: Track sales, expenses, and purchases in real-time.
-
-🕌 Zakat Calculator: Specialized module to calculate standard 2.5% Zakat based on live inventory valuation, cash, and active debts.
-
-🏗️ Technology Stack
-
-Backend: Python (Standard http.server), SQLite3, Hashlib (PBKDF2).
-
-Frontend: HTML5, CSS3 (Custom variables, responsive design), Vanilla JavaScript (ES6+).
-
-Architecture: RESTful API, Single Page Application (SPA).
-
-🚀 Installation & Usage
-
-Prerequisites
-
-Python 3.8 or higher installed on your machine.
-
-Running the Server
-
-Clone the repository:
-
-git clone https://github.com/Team-Loader-Store/Agile-project-.git
-cd Agile-project-
-
-
-Start the backend server:
-
-python server.py
-
-
-(Alternatively, run desktop.py to launch as a standalone desktop application).
-
-Open your web browser and navigate to:
-
-http://127.0.0.1:8000
-
-
-📂 Project Structure
-
-📦 Loader-Store
- ┣ 📂 static             # Frontend assets
- ┃ ┣ 📜 index.html       # The main Single Page Application (UI + Logic)
- ┃ ┗ 🖼️ logo.png         # System Logo
- ┣ 📂 data               # Database storage (created on first run)
- ┃ ┗ 🛢️ loader.db        # SQLite database
- ┣ 📜 server.py          # Python Backend API & Database Handlers
- ┣ 📜 desktop.py         # Script to run the app as a desktop window
- ┗ 📜 README.md          # Project documentation
-
-
-🔄 Agile Development
-
-This project was developed using Agile (Scrum) methodologies.
-
-Task Tracking: Jira was used to track User Stories, Bugs, and Tasks (e.g., SCRUM-142, SCRUM-143, SCRUM-111).
-
-Version Control: Managed via GitHub with structured Branching and Pull Request workflows.
+## Notes
+- Does not install Cloudflare CLI automatically or provision a permanent domain.
+- Starts a second command window using `python server.py` and checks local HTTP response before starting the HTTPS tunnel.
+- Quitting the tunnel does not necessarily terminate the Python server window; close both.
+- AC Windows runtime verification still requires a test on an actual Windows machine.
