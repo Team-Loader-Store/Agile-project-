@@ -1,0 +1,60 @@
+"""Command-line demo for the Loader Store inventory modules."""
+
+from inventory import add_part, get_all_parts, update_quantity
+
+
+def print_inventory():
+    parts = get_all_parts()
+    if not parts:
+        print("Inventory is empty.")
+        return
+
+    print("\n--- LOADER STORE INVENTORY ---")
+    for part in parts:
+        print(
+            f"#{part['id']} | {part['part_name']} | "
+            f"Code: {part['part_number']} | "
+            f"Qty: {part['quantity']} | "
+            f"Price: {part['unit_price']:.2f}"
+        )
+
+
+def main():
+    print("Loader Store - Inventory Demo")
+    print("1. Add demo part")
+    print("2. Show inventory")
+    print("3. Update quantity")
+
+    choice = input("Choose an option: ").strip()
+
+    try:
+        if choice == "1":
+            name = input("Part name: ")
+            code = input("Part number: ")
+            quantity = int(input("Quantity: "))
+            price = float(input("Unit price: "))
+            part_id = add_part(name, code, quantity, price)
+            print(f"Part added successfully. ID: {part_id}")
+
+        elif choice == "2":
+            print_inventory()
+
+        elif choice == "3":
+            part_id = int(input("Part ID: "))
+            quantity = int(input("New quantity: "))
+            if update_quantity(part_id, quantity):
+                print("Quantity updated.")
+            else:
+                print("Part ID was not found.")
+
+        else:
+            print("Invalid option.")
+
+    except (ValueError, TypeError) as error:
+        print(f"Input error: {error}")
+    except Exception as error:
+        print(f"Operation failed: {error}")
+
+
+if __name__ == "__main__":
+    main()
